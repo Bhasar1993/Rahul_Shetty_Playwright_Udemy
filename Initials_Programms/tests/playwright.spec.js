@@ -1,46 +1,57 @@
-const{test,expect}=require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const { log } = require('console');
 
 
-test('Playwright first script',async({browser})=>
-    {
-        const context=await browser.newContext();
-        const page=await context.newPage();
-        await page.goto("https://www.amazon.in/");
-         console.log("Amazon Title is : "+await page.title());
-        //  expect(page).toHaveTitle("Online Shopping site in India: Shop Online for Mobiles, Books, Watches, Shoes and More - Amazon.in");
-    });
-        
+
+
 // Login with valid credentials
-    test.only('Login with valid data',async({page})=>
-        {
-           await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
-           console.log("Rahul Shetty's title: "+await page.title());
-          await expect(page).toHaveTitle("LoginPage Practise | Rahul Shetty Academy");
+test('Login with valid data', async ({ page }) => {
 
-          await page.locator("#username").fill("rahulshettyacademy");
-          await page.locator("#password").fill("learning");
 
-          await page.locator("#signInBtn").click();
-          expect (page).toHaveURL("https://rahulshettyacademy.com/angularpractice/shop");
-          await page.waitForTimeout(5000);
+  await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
 
-        });
+  // const context = await browser.newContext();
+  // const page = await context.newPage();
+  const userName = page.locator("#username");
+  const password = page.locator("#password");
+  const signIn = page.locator("#signInBtn")
+  const cardTitles = page.locator(".card-body .card-title")
 
-        // Login with invalid credentials
-        test('Login with invalid data',async({page})=>
-        {
-           await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
-        //    console.log("Rahul Shetty's title: "+await page.title());
-          await expect(page).toHaveTitle("LoginPage Practise | Rahul Shetty Academy");
 
-          await page.locator("#username").fill("rahulshetty");
-          await page.locator("#password").fill("learning");
 
-          await page.locator("#signInBtn").click();
-         console.log( await page.locator('[style*="block"]').textContent())
+  console.log("Rahul Shetty's title: " + await page.title());
+  await expect(page).toHaveTitle("LoginPage Practise | Rahul Shetty Academy");
 
-        await expect(await page.locator('[style*="block"]')).toContainText("Incorrect");
-          await page.waitForTimeout(4000)
+  await userName.fill("rahulshettyacademy");
+  await password.fill("learning");
 
-        });
+  await signIn.click();
+  expect(page).toHaveURL("https://rahulshettyacademy.com/angularpractice/shop");
+  await page.waitForTimeout(5000);
+  console.log(await cardTitles.first().textContent());
+  console.log("All the products name: " + await cardTitles.allTextContents());
+
+});
+
+// Login with invalid credentials
+test('Login with invalid data', async ({ page }) => {
+
+  const userName = page.locator("#username");
+  const password = page.locator("#password");
+  const signIn = page.locator("#signInBtn")
+  const cardTitles = page.locator(".card-body .card-title")
+  await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
+  //    console.log("Rahul Shetty's title: "+await page.title());
+  await expect(page).toHaveTitle("LoginPage Practise | Rahul Shetty Academy");
+
+  await userName.fill("rahulshetty");
+  await password.fill("learning");
+
+  await signIn.click();
+  console.log(await page.locator('[style*="block"]').textContent())
+
+  await expect(await page.locator('[style*="block"]')).toContainText("Incorrect");
+  await page.waitForTimeout(4000)
+
+});
+
