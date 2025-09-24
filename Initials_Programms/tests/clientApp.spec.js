@@ -24,6 +24,7 @@ test('Rahul Shetty client dashboard SignUp', async ({ page }) => {
   await mobileNumber.fill("1234567899");
   await occupationDropDown.selectOption("Student");
   await genderCheckbox.click();
+  await expect(genderCheckbox).toBeChecked();    //Assertion for the checkbox
   await password.fill("Test@123");
   await C_password.fill("Test@123");
   await checkBox.click();
