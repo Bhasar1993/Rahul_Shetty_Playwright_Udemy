@@ -45,8 +45,10 @@ test.only('Rahul Shetty client dashboard Login', async ({ page }) => {
   const password = page.locator('#userPassword');
   const loginBtn = page.locator('//input[@id="login"]');
   const allProducts= page.locator('.card-body');
-  const cartBtn= page.locator('[routerlink="/dashboard/cart"]')
-
+  const cartBtn= page.locator('[routerlink="/dashboard/cart"]');
+  const checkoutBtn=page.locator('//button[text()="Checkout"]');
+  const crediCardTextBox=page.locator('//div[@class="field"]//input[@class="input txt text-validated"]');
+  const expiryDatedropdown=page.locator('(//div[@class="row"]//div[@class="field small"]//select[@class="input ddl"])[1]');
 
 
   // Action methods
@@ -81,6 +83,11 @@ test.only('Rahul Shetty client dashboard Login', async ({ page }) => {
   await page.waitForTimeout(4000);
 
   console.log(await page.locator('.text-muted').allTextContents());
+  await checkoutBtn.click();
+  await crediCardTextBox.fill("4453 2551 7075 2022");
+  await page.pause();
+  await expiryDatedropdown.selectOption('03');
+  
 
   // Fetch the first product on Homepage
 
