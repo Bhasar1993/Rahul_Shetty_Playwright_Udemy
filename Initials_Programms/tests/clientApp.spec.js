@@ -40,18 +40,43 @@ test.only('Rahul Shetty client dashboard Login', async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
 
   // Locators
+  const productName= "ZARA COAT 3";
   const emailId = page.locator('#userEmail');
   const password = page.locator('#userPassword');
   const loginBtn = page.locator('//input[@id="login"]');
+  const allProducts= page.locator('.card-body');
+  const cartBtn= page.locator('[routerlink="/dashboard/cart"]')
+
+
+
   // Action methods
 
   await emailId.fill("mahesh.test@gmail.com");
   await password.fill("Test@123");
   await loginBtn.click();
+  await allProducts.first().waitFor();
+  const count=await allProducts.count();
+  await console.log(count);
+
+  for(let i=0; i<count;i++)
+    {
+      if(await allProducts.nth(i).locator("b").textContent() === productName )
+      {
+        //add product to tha cart
+        await allProducts.nth(i).locator("text= Add To Cart").click();
+        break;
+      }
+    }
 
   const pageTitle = await page.title();
   console.log(pageTitle);
   await expect(page).toHaveTitle("Let's Shop")
+
+  await cartBtn.click();
+  await page.locator('div li').first().waitFor();
+  const bool=await page.locator('h3:has-text(productName)').isVisible
+  await expect(bool).toBeTruthy();
+
 
   await page.waitForTimeout(4000);
 

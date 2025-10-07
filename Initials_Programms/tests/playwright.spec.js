@@ -59,7 +59,7 @@ test('Login with invalid data', async ({ page }) => {
 
 });
 
-test.only('Child Window Handle', async ({ browser }) => {
+test('Child Window Handle', async ({ browser }) => {
 
   const context = await browser.newContext();
   const page = await context.newPage();
